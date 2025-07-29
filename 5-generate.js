@@ -3,18 +3,26 @@
 const jsonstr = "https://jsonplaceholder.typicode.com/todos?_limit=10";
 const imgstr = "https://picsum.photos/id/237/300/200";
 // const textstr = "http://127.0.0.1:3000/";
-const textstr = "https://jsonplaceholder.typicode.com/comments/1";
+// const textstr = "https://jsonplaceholder.typicode.com/comments/1";
 
 export function getData() {
   const img = document.querySelector("#pic");
   let header = document.querySelector("header");
+  let list = document.querySelector("#list");
 
   fetch(jsonstr)
     .then((response) => {
       if (!response.ok) throw new Error("Invalid response");
       return response.json();
     })
-    .then((data) => console.log(data))
+    .then((data) => {
+      list.innerHTML = data
+        .map((item) => {
+          console.log(data);
+          return `<li data-uid= "${item.id}">${item.title}</li>`;
+        })
+        .join("");
+    })
     .catch((error) => console.error(error.message));
 
   fetch(textstr)
