@@ -15,4 +15,37 @@ let obj = {
   favouriteColor: "blue",
 };
 
-export function getData() {}
+export function getData() {
+  fetch(imgstr)
+    .then((response) => {
+      if (!response.ok) throw new Error("invalid");
+      return response.blob();
+    })
+    .then((blob) => {
+      console.log(blob);
+
+      let photo = URL.createObjectURL(blob);
+      let img = document.getElementById("pic");
+      img.src = photo;
+    })
+    .catch((error) => console.error(error.message));
+
+  const jsonstring = JSON.stringify(obj);
+  console.log(jsonstring);
+  let file = new File([jsonstring], "mydata.json", {
+    type: "application/json",
+  });
+
+  let response = new Response(file, {
+    status: 200,
+    statusText: "Say my name",
+    headers: {
+      "content-type": "application/json",
+      "content-length": file.size,
+      "x-ray": "starts with x for a custom header name",
+    },
+  });
+
+  console.log(response.headers.get("content-type"));
+  console.log(response.headers.get("content-length"));
+}
