@@ -6,26 +6,30 @@ export function getData() {
   //controlling when cookies and credentials are passed to a server
   //CSP meta tags and headers
 
-  let str = "http://127.0.0.1:3000/?name=value&steve=griffith";
-  let url = new URL(str); //url.search
+  let str = "http://127.0.1:3000/?name=value&steve=griffith";
+  let url = new URL(str);
   let sp = url.searchParams;
   sp.append("hello", "world");
-  sp.append("api-key", "kajshdfkahjsdfkjhsdfkahsdfkjksdjhfksjdh");
-  // document.cookie('')
+  sp.append("api-key", "ashdadshalshdlahd");
 
   let h = new Headers();
-  // h.append('content-type', 'application/json')
-  // h.append('origin', 'https://cia.org')
-  h.append("x-api-key", "kajshdfkahjsdfkjhsdfkahsdfkjksdjhfksjdh"); //API key
-  h.append("Authorization", "Bearer kajshdfkahjsdfkjhsdfkahsdfkjksdjhfksjdh"); //JWT
-  //Forbidden Header Names
+  h.append("x-api-key", "hasdhalshda"); //API key
+  h.append("Authorization", "Bearer ashdahdhashdahdh"); //JWT
 
   let request = new Request(url, {
-    method: "GET",
+    method: "POST",
     headers: h,
     cache: "default",
-    credentials: "same-origin",
+    credentials: "omit",
   });
 
-  fetch(request);
+  fetch(request)
+    .then((response) => {
+      if (!response.ok) throw new Error("invalid");
+      return response.text();
+    })
+    .then((txt) => {
+      console.log(txt);
+    })
+    .catch((error) => console.error(error.message));
 }
